@@ -1,5 +1,5 @@
 # canvas-factory
-
+[![npm version](https://img.shields.io/npm/v/canvas-factory.svg?style=flat-square)](https://www.npmjs.com/package/canvas-factory)
 ## Dependencies
 [node-canvas](https://github.com/Automattic/node-canvas)
 
