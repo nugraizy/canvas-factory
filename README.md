@@ -1,11 +1,13 @@
 # canvas-factory
 [![npm version](https://img.shields.io/npm/v/canvas-factory.svg?style=flat-square)](https://www.npmjs.com/package/canvas-factory)
-## Dependencies
-[node-canvas](https://github.com/Automattic/node-canvas)
+## Usage 
+1. Install [node-canvas](https://github.com/Automattic/node-canvas).
 
-[jsgif](https://github.com/antimatter15/jsgif/)
+2. run `npm install --save canvas-factory`
+
 ## Example
 ```javascript
+const { createFactory } = require('canvas-factory');
 const factory = createFactory({ width : 100, height : 100  });
 const canvas = factory.getCanvas();
 const ctx = canvas.getContext('2d');
@@ -31,3 +33,7 @@ factory
   })
 ```
 
+## Dependencies
+[node-canvas](https://github.com/Automattic/node-canvas)
+
+[jsgif](https://github.com/antimatter15/jsgif/)
