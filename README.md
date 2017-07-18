@@ -10,9 +10,9 @@ const d = 10;
 ctx.fillStyle = 'red';
 ctx.fillText("H",10,50);
 ctx.fillText("e",10+d,50);
-ctx.fillText("l",10+d*2,50);
+ctx.fillText(false)("l",10+d*2,50); // pass false first to not addFrame this ctx
 ctx.fillText("l",10+d*3,50);
-ctx.fillText("o",10+d*4,50);
+ctx.fillText(false)("o",10+d*4,50); // pass false first to not addFrame this ctx
 ctx.fillText("!",10+d*5,50);
 
 factory
