@@ -39,6 +39,9 @@ const createFactory = ({ width, height }) => {
     }
   }
 
+  newCanvas.getCanvas = () => {
+    return canvas;
+  }
 
   newCanvas.getContext = (type) => {
     ctx = canvas.getContext(type);
@@ -53,7 +56,10 @@ const createFactory = ({ width, height }) => {
             if ( arguments.length === 1 && arguments[0] === false ){
               return originFn.bind(ctx);
             }
-            originFn.apply(ctx,arguments);
+            const mapOriginCanvas = [].slice.call(arguments).map((el) => 
+              ( typeof el.getCanvas === 'function' ) ? el.getCanvas() : el
+            );
+            originFn.apply(ctx,mapOriginCanvas);
             if ( isRecord ){
               encoder.addFrame(ctx);
             }
@@ -69,7 +75,6 @@ const createFactory = ({ width, height }) => {
     
     return newCtx;
   }
-
 
   const getCanvas = () => {
     return newCanvas;

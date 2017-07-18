@@ -50,14 +50,14 @@ const pixelCooler = function(i, d) {
 const glitchBlock = function(i, x, y) {
   if(i > 3) {
     var spliceHeight = 1 + randInt(0, 10);
-    ctx.drawImage(canvas,x,y,x,spliceHeight,randInt(0, x),y,randInt(x, imgWidth),spliceHeight);
+    //ctx.drawImage(canvas,x,y,x,spliceHeight,randInt(0, x),y,randInt(x, imgWidth),spliceHeight);
   }
 };
 
 const glitchLine = function(i, x, y) {
   var spliceHeight = 1 + randInt(1, 10);
   //var spliceHeight = 1 + randInt(1, 50);
-  ctx.drawImage(canvas,offset, y, imgWidth - offset * 2,spliceHeight,1 + randInt(0, offset * 2),y + randInt(0, 10), imgWidth - offset, spliceHeight);
+  //ctx.drawImage(canvas,offset, y, imgWidth - offset * 2,spliceHeight,1 + randInt(0, offset * 2),y + randInt(0, 10), imgWidth - offset, spliceHeight);
 };
 
 const pixelProcessor = function(imageData, step, callback) {
