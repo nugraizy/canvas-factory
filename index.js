@@ -10,6 +10,9 @@ const FfmpegCommand = require('fluent-ffmpeg');
 const LZWEncoder = require('./LZWEncoder');
 const NeuQuant = require('./NeuQuant');
 const GIFEncoder = require('./GIFEncoder');
+const { register } = require('./watch');
+
+register();
 
 const createFactory = ({ width, height }) => {
 
@@ -37,10 +40,8 @@ const createFactory = ({ width, height }) => {
   }
 
 
-
   newCanvas.getContext = (type) => {
     ctx = canvas.getContext(type);
-    ctx.fillStyle = 'red';
     let newCtx = {};
     for ( let key in ctx ){
       if ( typeof ctx[key] === 'function' ){
@@ -57,6 +58,9 @@ const createFactory = ({ width, height }) => {
         }
       } else {
         newCtx[key] = ctx[key];
+        newCtx.watch(key, (el, oldVal, newVal) => {
+          ctx[key] = newVal;
+        });
       }
     }
     
