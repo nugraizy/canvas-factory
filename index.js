@@ -45,15 +45,18 @@ const createFactory = ({ width, height }) => {
     let newCtx = {};
     for ( let key in ctx ){
       if ( typeof ctx[key] === 'function' ){
-        const originFn = ctx[key];
-        newCtx[key] = function(){
-					if ( arguments.length === 1 && arguments[0] === false ){
-						return originFn.bind(ctx);
-					}
-					
-          originFn.apply(ctx,arguments);
-          if ( isRecord ){
-            encoder.addFrame(ctx);
+        if ( /^(get|is)/.test(key) === true ){
+          newCtx[key] = ctx[key].bind(ctx);
+        } else {
+          const originFn = ctx[key];
+          newCtx[key] = function(){
+            if ( arguments.length === 1 && arguments[0] === false ){
+              return originFn.bind(ctx);
+            }
+            originFn.apply(ctx,arguments);
+            if ( isRecord ){
+              encoder.addFrame(ctx);
+            }
           }
         }
       } else {
