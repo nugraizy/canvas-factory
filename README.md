@@ -1,5 +1,9 @@
 # canvas-factory
 
+## Dependencies
+[node-canvas](https://github.com/Automattic/node-canvas)
+
+[jsgif](https://github.com/antimatter15/jsgif/)
 ## Example
 ```javascript
 const factory = createFactory({ width : 100, height : 100  });
