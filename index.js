@@ -18,6 +18,8 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
 
   let ctx;
   let isRecord = true;
+  let isPending = false;
+  let queue = [];
 
   const canvas = new Canvas(width, height);
   const encoder = new GIFEncoder();
@@ -79,10 +81,15 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
     return newCanvas;
   }
 
-  const saveGIF = (fn) => {
-    encoder.finish();
-    fn(encoder.stream().getData());
-    return self;
+  const saveGIF = (fileName) => {
+    return handle(function(){
+      encoder.finish();
+      fs.writeFile(fileName, encoder.stream().getData(), 'binary', function(err){
+        if (err) throw err;
+        console.log('save gif');
+        fulfill();
+      })
+    })
   }
 
   const saveMP4 = () => {
@@ -90,16 +97,44 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
   }
 
   const startRecord = () => {
-    isRecord = true;
-    return self;
+    return handle(function(){
+      console.log('start record');
+      isRecord = true;
+      fulfill();
+    });
   }
 
   const stopRecord = () => {
-    isRecord = false;
-    return self;
+    return handle(function(){
+      console.log('stop record');
+      isRecord = false;
+      fulfill();
+    });
   }
 
   const clearRecord = () => {
+    return handle(function(){
+      console.log('clear record');
+      fulfill();
+    });
+  }
+
+  const handle = (fn) => {
+    queue.push(fn);
+    return resolve();
+  }
+
+  const fulfill = () => {
+    isPending = false;
+    resolve();
+  }
+
+  const resolve = () => {
+    if ( queue.length !== 0 && !isPending ){
+      isPending = true;
+      const fn = queue.shift();
+      fn();
+    } 
     return self;
   }
 

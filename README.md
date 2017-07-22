@@ -23,12 +23,9 @@ ctx.fillText("!",10+d*5,50);
 
 factory
   .stopRecord()
-  .saveGIF((data) => {
-    fs.writeFile( '123.gif', data , 'binary', function(err){
-      if (err) throw err
-    })
-  })
+  .saveGIF('test.gif')
   .clearRecord()
+  .startRecord()
 ```
 
 ## Dependencies
