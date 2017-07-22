@@ -1,6 +1,6 @@
 {
   "name": "canvas-factory",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A module to let you produce gif and mp4 via canvas animation.",
   "main": "index.js",
   "scripts": {
