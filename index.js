@@ -96,24 +96,28 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
 
   const startRecord = () => {
     isRecord = true;
+    return self;
   }
 
   const stopRecord = () => {
     isRecord = false;
+    return self;
   }
 
   const clearRecord = () => {
 
   }
 
-  return {
+  const self = {
     getCanvas,
     saveGIF,
     saveMP4,
     startRecord,
     stopRecord,
     clearRecord
-  };
+  }
+
+  return self;
 }
 
 module.exports = {

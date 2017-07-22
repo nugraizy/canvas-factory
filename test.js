@@ -101,6 +101,7 @@ const renderCanvas = (cb) => {
     });
 
     factory
+      .stopRecord()
       .saveGIF()
       .then((data)=>{
         fs.writeFile( '123.gif', data , 'binary', function(err){
