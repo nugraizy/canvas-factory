@@ -86,7 +86,6 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
       encoder.finish();
       fs.writeFile(fileName, encoder.stream().getData(), 'binary', function(err){
         if (err) throw err;
-        console.log('save gif');
         fulfill();
       })
     })
@@ -98,7 +97,6 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
 
   const startRecord = () => {
     return handle(function(){
-      console.log('start record');
       isRecord = true;
       fulfill();
     });
@@ -106,7 +104,6 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
 
   const stopRecord = () => {
     return handle(function(){
-      console.log('stop record');
       isRecord = false;
       fulfill();
     });
@@ -114,7 +111,6 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
 
   const clearRecord = () => {
     return handle(function(){
-      console.log('clear record');
       fulfill();
     });
   }
@@ -126,14 +122,14 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
 
   const fulfill = () => {
     isPending = false;
+    queue.shift();
     resolve();
   }
 
   const resolve = () => {
     if ( queue.length !== 0 && !isPending ){
       isPending = true;
-      const fn = queue.shift();
-      fn();
+      queue[0]();
     } 
     return self;
   }
