@@ -79,15 +79,10 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
     return newCanvas;
   }
 
-  const saveGIF = () => {
-    return new Promise((resolve,reject)=>{
-      try {
-        encoder.finish();
-        resolve(encoder.stream().getData());
-      } catch(e){
-        reject(e);
-      }
-    })
+  const saveGIF = (fn) => {
+    encoder.finish();
+    fn(encoder.stream().getData());
+    return self;
   }
 
   const saveMP4 = () => {
@@ -105,7 +100,7 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
   }
 
   const clearRecord = () => {
-
+    return self;
   }
 
   const self = {

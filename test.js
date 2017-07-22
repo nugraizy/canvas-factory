@@ -102,15 +102,12 @@ const renderCanvas = (cb) => {
 
     factory
       .stopRecord()
-      .saveGIF()
-      .then((data)=>{
+      .saveGIF((data) => {
         fs.writeFile( '123.gif', data , 'binary', function(err){
           if (err) throw err
         })
       })
-      .catch((error)=>{
-        console.log(error);
-      })
+      .clearRecord()
     
 //     fs.writeFile( path.join(__dirname,'media',fileName + '.gif'), encoder.stream().getData() , 'binary', function(err){
 //       if (err) throw err

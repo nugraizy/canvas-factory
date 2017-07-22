@@ -22,15 +22,13 @@ ctx.fillText(false)("o",10+d*4,50); // pass false first to not addFrame this ctx
 ctx.fillText("!",10+d*5,50);
 
 factory
-  .saveGIF()
-  .then((data)=>{
+  .stopRecord()
+  .saveGIF((data) => {
     fs.writeFile( '123.gif', data , 'binary', function(err){
       if (err) throw err
     })
   })
-  .catch((error)=>{
-    console.log(error);
-  })
+  .clearRecord()
 ```
 
 ## Dependencies
