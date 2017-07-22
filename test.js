@@ -20,23 +20,6 @@ let timer = 0,
 
 const TOTAL_FRAME = 100;
 
-
-
-// let timer ,
-//   currentFrame,
-//   totalFrame,
-//   offset,
-//   canvasWidth,
-//   canvasHeight,
-//   imgWidth ,
-//   imgHeight ,
-//   imgData,
-//   data ,
-//   userImg = new Image ,
-//   effectInterval = null ,
-//   encoder ;
-
-
 const pixelFlick = function(i, d) {
   d[i] = d[i+16];
 };

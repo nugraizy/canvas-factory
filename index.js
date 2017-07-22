@@ -14,17 +14,16 @@ const { register } = require('./watch');
 
 register();
 
-const createFactory = ({ width, height }) => {
+const createFactory = ({ width, height, delay = 1000/60 }) => {
 
   let ctx;
   let isRecord = true;
 
-  const FPS = 60 , TOTAL_FRAME = 100 ;
   const canvas = new Canvas(width, height);
   const encoder = new GIFEncoder();
   
   encoder.setRepeat(0); 
-  encoder.setDelay(1000/FPS);
+  encoder.setDelay(delay);
   if ( isRecord ){
     encoder.start();
   }
