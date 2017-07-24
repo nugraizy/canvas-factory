@@ -16,21 +16,23 @@ register();
 
 const createFactory = ({ width, height, delay = 1000/60 }) => {
 
-  let ctx;
-  let isRecord = true;
-  let isPending = false;
+  let self = {};
   let queue = [];
 
   const canvas = new Canvas(width, height);
   const encoder = new GIFEncoder();
-  
+
+  let newCanvas = {};
+  let ctx;
+
+  let isRecord = true;
+  let isPending = false;
+
   encoder.setRepeat(0); 
   encoder.setDelay(delay);
   if ( isRecord ){
     encoder.start();
   }
-  
-  let newCanvas = {};
   
   for ( let key in canvas ){
     if ( typeof canvas[key] === 'function' ){
@@ -77,44 +79,6 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
     return newCtx;
   }
 
-  const getCanvas = () => {
-    return newCanvas;
-  }
-
-  const saveGIF = (fileName) => {
-    return handle(function(){
-      encoder.finish();
-      fs.writeFile(fileName, encoder.stream().getData(), 'binary', function(err){
-        if (err) throw err;
-        fulfill();
-      })
-    })
-  }
-
-  const saveMP4 = () => {
-
-  }
-
-  const startRecord = () => {
-    return handle(function(){
-      isRecord = true;
-      fulfill();
-    });
-  }
-
-  const stopRecord = () => {
-    return handle(function(){
-      isRecord = false;
-      fulfill();
-    });
-  }
-
-  const clearRecord = () => {
-    return handle(function(){
-      fulfill();
-    });
-  }
-
   const handle = (fn) => {
     queue.push(fn);
     return resolve();
@@ -134,16 +98,46 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
     return self;
   }
 
-  const self = {
-    getCanvas,
-    saveGIF,
-    saveMP4,
-    startRecord,
-    stopRecord,
-    clearRecord
+  const getCanvas = () => {
+    return newCanvas;
   }
 
-  return self;
+  self.saveGIF = (fileName) => {
+    encoder.finish();
+    fs.writeFile(fileName, encoder.stream().getData(), 'binary', function(err){
+      if (err) throw err;
+      fulfill();
+    })
+  }
+
+  self.saveMP4 = () => {
+    fulfill();
+  }
+
+  self.startRecord = () => {
+    isRecord = true;
+    fulfill();
+  }
+
+  self.stopRecord = () => {
+    isRecord = false;
+    fulfill();
+  }
+
+  self.clearRecord = () => {
+    fulfill();
+  }
+
+  for ( let key in self ){
+    let originFn = self[key];
+    self[key] = (...args) => {
+      return handle(originFn.bind(this,...args));
+    }
+  }
+
+  return Object.assign({},self,{
+    getCanvas
+  });
 }
 
 module.exports = {
