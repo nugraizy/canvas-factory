@@ -28,7 +28,7 @@ ctx.fillText("!",10+d*5,50);
 factory
   .stopRecord()
   .saveGIF('test.gif')
-  .saveGIF('test.mp4')
+  .saveMP4('test.mp4')
   .clearRecord()
   .startRecord()
 ```
