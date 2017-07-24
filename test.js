@@ -103,6 +103,7 @@ const renderCanvas = (cb) => {
     factory
       .stopRecord()
       .saveGIF('test.gif')
+      .saveMP4('test.mp4')
       .clearRecord()
       .startRecord()
       //.saveMP4()

@@ -16,6 +16,10 @@ GIFEncoder = function() {
     this.bin = [];
   }
 
+  ByteArray.prototype.getByteArray = function() {
+    return this.bin;
+  };
+
   ByteArray.prototype.getData = function() {
     for (var v = '', l = this.bin.length, i = 0; i < l; i++)
       v += chr[this.bin[i]];

@@ -2,11 +2,26 @@ const LZWEncoder = require('./LZWEncoder');
 const NeuQuant = require('./NeuQuant');
 const GIFEncoder = require('./GIFEncoder');
 
-const createEncoder = () => {
+const createEncoder = ({ delay, width, height }) => {
+
 	const gifEncoder = new GIFEncoder();
 
 	const getGIFData = () => {
+		gifEncoder.finish();
 		return gifEncoder.stream().getData();
+	}
+
+	const getGIFByteArray = () => {
+		gifEncoder.finish();
+		return gifEncoder.stream().getByteArray();
+	}
+
+	const getWebMData = (fn) => {
+		
+	}
+
+	const getMP4Data = () => {
+
 	}
 
 	const start = () => {
@@ -31,11 +46,13 @@ const createEncoder = () => {
 
 	return {
 		start,
-		finish,
 		setRepeat,
 		setDelay,
 		addFrame,
-		getGIFData
+		getGIFData,
+		getGIFByteArray
+		//getWebMData,
+		//getMP4Data
 	}
 }
 

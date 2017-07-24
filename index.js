@@ -6,6 +6,9 @@ const Canvas = require('canvas') ;
 const imagemin = require('imagemin');
 const imageminGifsicle = require('imagemin-gifsicle');
 
+const streamifier = require('streamifier');
+const ffmpeg = require('fluent-ffmpeg');
+
 const { createEncoder } = require('./encoder');
 const { register } = require('./watch');
 
@@ -17,7 +20,7 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
   let queue = [];
 
   const canvas = new Canvas(width, height);
-  const encoder = createEncoder();
+  const encoder = createEncoder({ delay });
 
   let newCanvas = {};
   let ctx;
@@ -100,31 +103,38 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
   }
 
   self.saveGIF = (fileName) => {
-    encoder.finish();
     fs.writeFile(fileName, encoder.getGIFData(), 'binary', function(err){
       if (err) throw err;
       fulfill();
     })
   }
 
-  function byteToUint8Array(byteArray) {
-      var uint8Array = new Uint8Array(byteArray.length);
-      for(var i = 0; i < uint8Array.length; i++) {
-          uint8Array[i] = byteArray[i];
-      }
-
-      return uint8Array;
-  }
-
   self.saveMP4 = (fileName) => {
-    encoder.finish();
+    const unit8Array = new Uint8Array(encoder.getGIFByteArray());
+    const buffer = new Buffer(unit8Array.buffer);
+    const readableStream = streamifier.createReadStream(buffer);
+    ffmpeg()
+      .input(readableStream)
+      .inputFPS(delay)
+      .inputFormat('gif')
+      .outputOptions([
+        '-movflags faststart',
+        '-pix_fmt yuv420p',
+        '-vf scale=trunc(iw/2)*2:trunc(ih/2)*2'
+      ])  
+      .toFormat('mp4')
+      .save(fileName);
     fulfill();
   }
 
-  self.saveWebM = (fileName) => {
-    encoder.finish();
-    fulfill();
-  }
+  // self.saveWebM = (fileName) => {
+  //   encoder.getWebMData((data) => {
+  //     fs.writeFile(fileName, data, function(err){
+  //       if (err) throw err;
+  //       fulfill();
+  //     })
+  //   })
+  // }
 
   self.startRecord = () => {
     isRecord = true;

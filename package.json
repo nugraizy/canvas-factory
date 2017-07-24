@@ -20,11 +20,14 @@
   },
   "homepage": "https://github.com/jeno5980515/canvas-factory#readme",
   "dependencies": {
+    "atob": "^2.0.3",
     "canvas": "^1.6.5",
     "fluent-ffmpeg": "^2.1.2",
     "imagemin": "^5.3.1",
     "imagemin-gifsicle": "^5.2.0",
-    "node-gyp": "^3.6.2"
+    "node-gyp": "^3.6.2",
+    "stream-buffers": "^3.0.1",
+    "streamifier": "^0.1.1"
   },
   "devDependencies": {}
 }
