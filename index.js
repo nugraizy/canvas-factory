@@ -5,11 +5,8 @@ const path = require('path');
 const Canvas = require('canvas') ;
 const imagemin = require('imagemin');
 const imageminGifsicle = require('imagemin-gifsicle');
-const FfmpegCommand = require('fluent-ffmpeg');
 
-const LZWEncoder = require('./LZWEncoder');
-const NeuQuant = require('./NeuQuant');
-const GIFEncoder = require('./GIFEncoder');
+const { createEncoder } = require('./encoder');
 const { register } = require('./watch');
 
 register();
@@ -20,7 +17,7 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
   let queue = [];
 
   const canvas = new Canvas(width, height);
-  const encoder = new GIFEncoder();
+  const encoder = createEncoder();
 
   let newCanvas = {};
   let ctx;
@@ -104,13 +101,28 @@ const createFactory = ({ width, height, delay = 1000/60 }) => {
 
   self.saveGIF = (fileName) => {
     encoder.finish();
-    fs.writeFile(fileName, encoder.stream().getData(), 'binary', function(err){
+    fs.writeFile(fileName, encoder.getGIFData(), 'binary', function(err){
       if (err) throw err;
       fulfill();
     })
   }
 
-  self.saveMP4 = () => {
+  function byteToUint8Array(byteArray) {
+      var uint8Array = new Uint8Array(byteArray.length);
+      for(var i = 0; i < uint8Array.length; i++) {
+          uint8Array[i] = byteArray[i];
+      }
+
+      return uint8Array;
+  }
+
+  self.saveMP4 = (fileName) => {
+    encoder.finish();
+    fulfill();
+  }
+
+  self.saveWebM = (fileName) => {
+    encoder.finish();
     fulfill();
   }
 
